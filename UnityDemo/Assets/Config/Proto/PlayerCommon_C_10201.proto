@@ -1,0 +1,24 @@
+备注
+syntax = "proto3";
+import "PlayerCommon.proto";
+
+//ResponseType G2C_GmCommand
+message C2G_GmCommand // IRequest
+{
+	int32 RpcId = 1;
+	string Command = 2;
+	repeated string CommandArgs = 3;
+}
+
+message G2C_GmCommand // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+message G2C_Message // IMessage
+{
+	string Message = 1;
+}
+

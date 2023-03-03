@@ -1,0 +1,49 @@
+备注
+syntax = "proto3";
+import "PlayerCommon.proto";
+
+/// <summary>
+/// 创建角色
+/// </summary>
+//ResponseType G2C_CreateRole
+message C2G_CreateRole // IRequest
+{
+	int32 RpcId = 1;
+	string Name = 2;
+}
+
+message G2C_CreateRole // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+/// <summary>
+/// 角色登录
+/// </summary>
+//ResponseType G2C_RoleLogin
+message C2G_RoleLogin // IRequest
+{
+	int32 RpcId = 90;
+}
+
+message G2C_RoleLogin // IResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 1;
+	string Message = 2;
+}
+
+//ResponseType G2C_RoleLogout
+message C2G_RoleLogout // IRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_RoleLogout // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}

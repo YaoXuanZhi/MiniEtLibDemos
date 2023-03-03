@@ -1,0 +1,29 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType G2C_Ping
+message C2G_Ping // IRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_Ping // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 Time = 4;
+}
+
+//ResponseType G2C_Benchmark
+message C2G_Benchmark // IRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_Benchmark // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
