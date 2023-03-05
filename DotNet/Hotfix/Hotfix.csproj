@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputPath>..\..\Bin\</OutputPath>
+        <RootNamespace>ET</RootNamespace>        
+        <AssemblyName>Hotfix</AssemblyName>        
+    </PropertyGroup>
+
+    <ItemGroup>
+        
+        <Compile Include="..\..\UnityDemo\Assets\Scripts\Codes\Hotfix\Server\**\*.cs">
+            <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
+        <Compile Include="..\..\UnityDemo\Assets\Scripts\Codes\Hotfix\Share\**\*.cs">
+            <Link>Share\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Loader\Loader.csproj" />
+        <ProjectReference Include="..\Model\Model.csproj" />
+    </ItemGroup>    
+
+</Project>
