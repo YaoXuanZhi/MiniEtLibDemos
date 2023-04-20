@@ -1,0 +1,22 @@
+﻿<Window x:Class="AppClientGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AppClientGUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button x:Name="Button_Login" Content="登录" HorizontalAlignment="Left" Margin="225,112,0,0" VerticalAlignment="Top" Height="43" Width="100"/>
+        <Button x:Name="Button_Logout" Content="登出" HorizontalAlignment="Left" Margin="492,112,0,0" VerticalAlignment="Top" Height="43" Width="90"/>
+        <TextBox x:Name="Text_Board" HorizontalAlignment="Left" Margin="280,253,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="257" Height="78"/>
+        <WrapPanel HorizontalAlignment="Center" Margin="0,195,0,0" Orientation="Horizontal" VerticalAlignment="Top">
+            <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top"><Run Language="zh-cn" Text="Gm命令："/></TextBlock>
+            <TextBox x:Name="Input_Gm" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+            <Button x:Name="Button_GmApply" Content="应用Gm" HorizontalAlignment="Left" VerticalAlignment="Top" Width="64"/>
+
+        </WrapPanel>
+        <Button x:Name="Button_ReloadHotFix" Content="重载HotFix" HorizontalAlignment="Left" Margin="654,120,0,0" VerticalAlignment="Top" Height="27" Width="78" Click="Button_ReloadHotFix_Click"/>
+
+    </Grid>
+</Window>

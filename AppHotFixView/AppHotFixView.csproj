@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\AppGenCode\Config\Client\**\*.cs">
+            <Link>AppConfig\Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <Compile Include="..\AppHotFix\src\Client\**\*.cs">
+            <Link>AppHotFix\Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+        <Compile Include="..\AppHotFix\src\Share\**\*.cs">
+            <Link>AppHotFix\Share\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AppClientGUI\AppClientGUI.csproj" />
+      <ProjectReference Include="..\GUI_Loader\GUI_Loader.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="src\RpcHandler\" />
+    </ItemGroup>
+
+</Project>

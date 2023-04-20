@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="..\AppModelView\**\*.cs">
+            <Link>AppModelView\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+    </ItemGroup>
+    
+
+    <ItemGroup>
+      <ProjectReference Include="..\AppModel\AppModel.csproj" />
+      <ProjectReference Include="..\CLI_Loader\GUI_Loader.csproj" />
+      <ProjectReference Include="..\GUI_Loader\GUI_Loader.csproj" />
+    </ItemGroup>
+
+</Project>
