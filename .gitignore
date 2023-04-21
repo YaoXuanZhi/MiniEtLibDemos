@@ -1,5 +1,15 @@
-obj
+/AppClientCLI/bin/Debug/Logs
+/AppClientGUI/bin
 bin
+obj
+*.user
+Logs
+net8.0
+BuildTemp
+/UnityDemo/Library
+Backup
+/Config/Tools/Luban/.cache.meta
+Bundles
 /UnityDemo/Assets/Bundles.meta
 /UnityDemo/Assets/Bundles
 /UnityDemo/Backup
