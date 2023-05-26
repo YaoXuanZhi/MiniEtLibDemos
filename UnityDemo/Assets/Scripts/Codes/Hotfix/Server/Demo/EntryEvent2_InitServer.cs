@@ -8,6 +8,7 @@ namespace ET.Server
         protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent2 args)
         {
             Root.Instance.Scene.AddComponent<GmDispatcherComponent>();
+            Root.Instance.Scene.AddComponent<ServerSceneManagerComponent>();
 
             {
                 var id = 1;
@@ -16,10 +17,8 @@ namespace ET.Server
                 var sceneType = SceneType.Gate;
                 var name = "GateServer";
                 
-                Scene appScene = EntitySceneFactory.CreateScene(id, instanceId, zone, sceneType, name);
-                // scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.OuterIPPort);
-                appScene.AddComponent<NetServerComponent, IPEndPoint>(NetworkHelper.ToIPEndPoint("127.0.0.1", 30001));
-                appScene.AddComponent<PlayerComponent>();
+                await SceneFactory.CreateServerScene(ServerSceneManagerComponent.Instance, id, instanceId, zone, name,
+                    sceneType);
             }
 
             if (Options.Instance.Console == 1)

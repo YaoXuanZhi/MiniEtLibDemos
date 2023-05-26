@@ -12,7 +12,7 @@ namespace ET.Client
             var uiComponent = clientScene.GetComponent<UIComponent>();
             UI ui = uiComponent.Get(UIType.UILobby);
             var uiLobbyComponent = ui.GetComponent<UILobbyComponent>();
-            uiLobbyComponent.MessageText.text = $"å“åº”äº†ï¼š{message.Message}";
+            uiLobbyComponent.MessageText.text = $"ÏìÓ¦ÁË£º{message.Message}";
             await ETTask.CompletedTask;
         }
     }

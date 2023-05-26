@@ -7,12 +7,16 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent3 args)
         {
+            Root.Instance.Scene.GetOrAddComponent<ServerSceneManagerComponent>();
+
+            var id = 2;
+            var instanceId = IdGenerater.Instance.GenerateInstanceId();
             var zone = 1;
             var sceneType = SceneType.BenchmarkClient;
             var name = "BenchmarkClient";
 
-            Scene appScene = EntitySceneFactory.CreateScene(zone, sceneType, name);
-            appScene.AddComponent<BenchmarkClientComponent>();
+            await SceneFactory.CreateServerScene(ServerSceneManagerComponent.Instance, id, instanceId, zone, name,
+                sceneType);
 
             if (Options.Instance.Console == 1)
             {
