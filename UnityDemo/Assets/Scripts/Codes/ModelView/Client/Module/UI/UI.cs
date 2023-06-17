@@ -80,5 +80,9 @@ namespace ET.Client
         public string Name { get; set; }
 
         public Dictionary<string, UI> nameChildren = new Dictionary<string, UI>();
+        
+        //UI界面参数
+        public object[] uiData { get; set; }
+        public bool IsShow = false;
     }
 }

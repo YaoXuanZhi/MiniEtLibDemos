@@ -8,16 +8,16 @@ using ET.Client;
 
 namespace ET.Client
 {
-	[UIEvent(UIType.UILobby)]
-	public class UILobbyEvent : AUIEvent
+	[UIEvent(UIType.UILogin)]
+	public class UILoginEvent : AUIEvent
 	{
 		public override async ETTask<UI> OnCreate(UIComponent uiComponent, UILayer uiLayer)
 		{
-			await uiComponent.DomainScene().GetComponent<ResourcesLoaderComponent>().LoadAsync(UIType.UILobby.StringToAB());
-			GameObject bundleGameObject = (GameObject) ResourcesComponent.Instance.GetAsset(UIType.UILobby.StringToAB(), UIType.UILobby);
+			await uiComponent.DomainScene().GetComponent<ResourcesLoaderComponent>().LoadAsync(UIType.UILogin.StringToAB());
+			GameObject bundleGameObject = (GameObject) ResourcesComponent.Instance.GetAsset(UIType.UILogin.StringToAB(), UIType.UILogin);
 			GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, UIEventComponent.Instance.GetLayer((int)uiLayer));
-			UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILobby, gameObject);
-			var pnl = ui.AddComponent<UILobbyComponent>();
+			UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILogin, gameObject);
+			var pnl = ui.AddComponent<UILoginComponent>();
 			pnl.OnShow();
 			return ui;
 		}
@@ -28,13 +28,13 @@ namespace ET.Client
 
 		public override void OnShow(UIComponent uiComponent, string uiType, params object[] args)
 		{
-			UILobbyComponent sample = uiComponent.GetUI<UILobbyComponent>(uiType);
+			UILoginComponent sample = uiComponent.GetUI<UILoginComponent>(uiType);
 			sample.OnShow(args);
 		}
 
 		public override void OnHide(UIComponent uiComponent, string uiType)
 		{
-			UILobbyComponent sample = uiComponent.GetUI<UILobbyComponent>(uiType);
+			UILoginComponent sample = uiComponent.GetUI<UILoginComponent>(uiType);
 			sample.OnHide();
 		}
 	}

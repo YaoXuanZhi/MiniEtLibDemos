@@ -24,20 +24,8 @@ namespace ET.Client
 				self.UILayers.Add((int)UILayer.Low, referenceCollector.Get<GameObject>(UILayer.Low.ToString()).transform);
 				self.UILayers.Add((int)UILayer.Mid, referenceCollector.Get<GameObject>(UILayer.Mid.ToString()).transform);
 				self.UILayers.Add((int)UILayer.High, referenceCollector.Get<GameObject>(UILayer.High.ToString()).transform);
-
-				var uiEvents = EventSystem.Instance.GetTypes(typeof (UIEventAttribute));
-				foreach (Type type in uiEvents)
-				{
-					object[] attrs = type.GetCustomAttributes(typeof(UIEventAttribute), false);
-					if (attrs.Length == 0)
-					{
-						continue;
-					}
-
-					UIEventAttribute uiEventAttribute = attrs[0] as UIEventAttribute;
-					AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
-					self.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
-				}
+				
+				self.LoadUIEvents();
 			}
 		}
 		
@@ -58,6 +46,23 @@ namespace ET.Client
 		{
 			return self.UILayers[layer];
 		}
+
+		public static void OnShow(this UIEventComponent self, UIComponent uiComponent, string uiType, params object[] args)
+		{
+			try
+			{
+				self.UIEvents[uiType].OnShow(uiComponent, uiType, args);
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"on remove ui error: {uiType}", e);
+			}
+		}
+		
+		public static void OnHide(this UIEventComponent self, UIComponent uiComponent, string uiType)
+		{
+			
+		}
 		
 		public static void OnRemove(this UIEventComponent self, UIComponent uiComponent, string uiType)
 		{
@@ -69,7 +74,28 @@ namespace ET.Client
 			{
 				throw new Exception($"on remove ui error: {uiType}", e);
 			}
-			
+		}
+
+		public static void LoadUIEvents(this UIEventComponent self)
+		{
+			var uiEvents = EventSystem.Instance.GetTypes(typeof (UIEventAttribute));
+			foreach (Type type in uiEvents)
+			{
+				object[] attrs = type.GetCustomAttributes(typeof(UIEventAttribute), false);
+				if (attrs.Length == 0)
+				{
+					continue;
+				}
+
+				UIEventAttribute uiEventAttribute = attrs[0] as UIEventAttribute;
+				AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
+				self.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
+			}
+		}
+
+		public static void RemoveUIEvents(this UIEventComponent self)
+		{
+			self.UIEvents.Clear();
 		}
 	}
 }

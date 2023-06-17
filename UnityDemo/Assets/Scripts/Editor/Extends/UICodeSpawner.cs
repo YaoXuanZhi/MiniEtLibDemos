@@ -108,7 +108,9 @@ public partial class UICodeSpawner
 
     static void SpawnCodeForPnlUIEvent(GameObject gameObject)
     {
-        if (!panelName.StartsWith("Pnl")) return;
+        if (!panelName.ToLower().StartsWith("pnl") && !panelName.ToLower().StartsWith("ui"))
+            return;
+
         string strPnlName = panelName;
         string strFileDir = HotfixViewUIDir + strPnlName + "/" + Generate;
     
@@ -171,27 +173,27 @@ public partial class UICodeSpawner
         strBuilder.AppendLine();
         strBuilder.AppendLine(space + "public override void OnRemove(UIComponent uiComponent)");
         strBuilder.AppendLine(space + "{");
-        strBuilder.AppendLine(space + "\t" + $"ResourcesComponent.Instance.UnloadBundle(UIType.{strPnlName}.StringToAB());");
+        //strBuilder.AppendLine(space + "\t" + $"ResourcesComponent.Instance.UnloadBundle(UIType.{strPnlName}.StringToAB());");
         strBuilder.AppendLine(space + "}");
         
-        // //OnShow
-        // space = "\t\t";
-        // strBuilder.AppendLine();
-        // strBuilder.AppendLine(space + "public override void OnShow(UIComponent uiComponent, string uiType, params object[] args)");
-        // strBuilder.AppendLine(space + "{");
-        // strBuilder.AppendLine(space + "\t" + string.Format($"{strPnlName}Component sample = uiComponent.GetUI<{strPnlName}Component>(uiType);"));
-        // strBuilder.AppendLine(space + "\t" + "sample.OnShow(args);");
-        // strBuilder.AppendLine(space + "}");
-        //
-        // //OnHide
-        // space = "\t\t";
-        // strBuilder.AppendLine();
-        // strBuilder.AppendLine(space + "public override void OnHide(UIComponent uiComponent, string uiType)");
-        // strBuilder.AppendLine(space + "{");
-        // strBuilder.AppendLine(space + "\t" + string.Format($"{strPnlName}Component sample = uiComponent.GetUI<{strPnlName}Component>(uiType);"));
-        // strBuilder.AppendLine(space + "\t" + "sample.OnHide();");
-        // strBuilder.AppendLine(space + "}");
-    
+        //OnShow
+        space = "\t\t";
+        strBuilder.AppendLine();
+        strBuilder.AppendLine(space + "public override void OnShow(UIComponent uiComponent, string uiType, params object[] args)");
+        strBuilder.AppendLine(space + "{");
+        strBuilder.AppendLine(space + "\t" + string.Format($"{strPnlName}Component sample = uiComponent.GetUI<{strPnlName}Component>(uiType);"));
+        strBuilder.AppendLine(space + "\t" + "sample.OnShow(args);");
+        strBuilder.AppendLine(space + "}");
+        
+        //OnHide
+        space = "\t\t";
+        strBuilder.AppendLine();
+        strBuilder.AppendLine(space + "public override void OnHide(UIComponent uiComponent, string uiType)");
+        strBuilder.AppendLine(space + "{");
+        strBuilder.AppendLine(space + "\t" + string.Format($"{strPnlName}Component sample = uiComponent.GetUI<{strPnlName}Component>(uiType);"));
+        strBuilder.AppendLine(space + "\t" + "sample.OnHide();");
+        strBuilder.AppendLine(space + "}");
+
         //类结尾
         strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("}");
