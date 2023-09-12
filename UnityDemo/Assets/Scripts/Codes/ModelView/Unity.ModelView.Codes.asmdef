@@ -6,10 +6,10 @@
         "Unity.Core",
         "Unity.Model.Codes",
         "Unity.Mathematics",
+        "YooAsset",
         "Unity.Loader"
     ],
     "includePlatforms": [
-        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": true,

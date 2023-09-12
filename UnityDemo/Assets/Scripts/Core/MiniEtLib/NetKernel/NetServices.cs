@@ -121,6 +121,11 @@ namespace ET
             return aService.Id;
         }
         
+        public void DirectRemoveService(int serviceId)
+        {
+            this.Remove(serviceId);
+        }
+        
         public void RemoveService(int serviceId)
         {
             NetOperator netOperator = new NetOperator() { Op = NetOp.RemoveService, ServiceId = serviceId };

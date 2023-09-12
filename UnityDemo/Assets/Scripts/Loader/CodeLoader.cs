@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using HybridCLR;
 using UnityEngine;
 
 namespace ET
@@ -9,6 +10,17 @@ namespace ET
 	public class CodeLoader: Singleton<CodeLoader>
 	{
 		private Assembly model;
+		private Dictionary<string, TextAsset> dlls;
+		private Dictionary<string, TextAsset> aotDlls;
+		
+		public async ETTask DownloadAsync()
+		{
+			if (!Define.IsEditor)
+			{
+				this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Model.dll");
+				this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"mscorlib.dll");
+			}
+		}
 
 		public void Start()
 		{
@@ -38,13 +50,16 @@ namespace ET
 				byte[] pdbBytes;
 				if (!Define.IsEditor)
 				{
-					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
-					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					assBytes = this.dlls["Model.dll"].bytes;
+					pdbBytes = this.dlls["Model.pdb"].bytes;
 
 					if (Define.EnableIL2CPP)
 					{
-						// HybridCLRHelper.Load();
+						foreach (var kv in this.aotDlls)
+						{
+							TextAsset textAsset = kv.Value;
+							RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
+						}
 					}
 				}
 				else
@@ -57,10 +72,8 @@ namespace ET
 				this.LoadHotfix();
 			}
 			
-			// todo 这里还需要看下怎么调整
-			// IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
-			// start.Run();
-			Entry.Start();
+			IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
+			start.Run();
 		}
 
 		// 热重载调用该方法
@@ -70,9 +83,8 @@ namespace ET
 			byte[] pdbBytes;
 			if (!Define.IsEditor)
 			{
-				Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-				assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
-				pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
+				assBytes = this.dlls["Hotfix.dll"].bytes;
+				pdbBytes = this.dlls["Hotfix.pdb"].bytes;
 			}
 			else
 			{

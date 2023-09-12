@@ -22,7 +22,12 @@ namespace ET.Client
         {
             protected override void Destroy(NetClientComponent self)
             {
+#if UNITY_EDITOR
+                //在Unity编辑器里，停止运行的时候，原本逻辑无法正常释放端口
+                NetServices.Instance.DirectRemoveService(self.ServiceId);
+#else
                 NetServices.Instance.RemoveService(self.ServiceId);
+#endif
             }
         }
 

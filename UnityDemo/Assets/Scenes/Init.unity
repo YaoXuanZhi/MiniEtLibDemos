@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731713, g: 0.13414736, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -442,8 +442,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data:
   - key: Unit
-    gameObject: {fileID: 1610378981859644, guid: cfaf4529ce2243c4c85126e9d008897b,
-      type: 3}
+    gameObject: {fileID: 1610378981859644, guid: cfaf4529ce2243c4c85126e9d008897b, type: 3}
+    component: 
+    refColor: {r: 0, g: 0, b: 0, a: 0}
+    refValue: 0
+    isAutoRegist: 0
+    go: {fileID: 0}
 --- !u!114 &575235023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,12 +869,32 @@ MonoBehaviour:
   data:
   - key: Hidden
     gameObject: {fileID: 872594939}
+    component: 
+    refColor: {r: 0, g: 0, b: 0, a: 0}
+    refValue: 0
+    isAutoRegist: 0
+    go: {fileID: 0}
   - key: Low
     gameObject: {fileID: 251107983}
+    component: 
+    refColor: {r: 0, g: 0, b: 0, a: 0}
+    refValue: 0
+    isAutoRegist: 0
+    go: {fileID: 0}
   - key: Mid
     gameObject: {fileID: 493985069}
+    component: 
+    refColor: {r: 0, g: 0, b: 0, a: 0}
+    refValue: 0
+    isAutoRegist: 0
+    go: {fileID: 0}
   - key: High
     gameObject: {fileID: 1439952248}
+    component: 
+    refColor: {r: 0, g: 0, b: 0, a: 0}
+    refValue: 0
+    isAutoRegist: 0
+    go: {fileID: 0}
 --- !u!850595691 &1972482029
 LightingSettings:
   m_ObjectHideFlags: 0

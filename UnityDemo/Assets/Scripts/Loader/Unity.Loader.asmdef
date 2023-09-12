@@ -5,8 +5,8 @@
         "Unity.ThirdParty",
         "Unity.Core",
         "HybridCLR.Runtime",
-        "UnityEditor.UI",
-        "UnityEngine.UI"
+        "YooAsset",
+        "YooAsset.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

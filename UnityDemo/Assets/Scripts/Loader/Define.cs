@@ -2,8 +2,7 @@
 {
 	public static class Define
 	{
-		// public const string BuildOutputDir = "./Temp/Bin/Debug";
-		public const string BuildOutputDir = "./BuildTemp/Bin/Debug";
+		public const string BuildOutputDir = "./Temp/Bin/Debug";
 
 #if UNITY_EDITOR && !ASYNC
 		public static bool IsAsync = false;

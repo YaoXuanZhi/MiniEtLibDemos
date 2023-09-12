@@ -57,16 +57,10 @@ namespace ET.Client
             }
             else
             {
-                using (Root.Instance.Scene.AddComponent<ResourcesComponent>())
+                foreach (Type type in configTypes)
                 {
-                    const string configBundleName = "config.unity3d";
-                    ResourcesComponent.Instance.LoadBundle(configBundleName);
-                    
-                    foreach (Type configType in configTypes)
-                    {
-                        TextAsset v = ResourcesComponent.Instance.GetAsset(configBundleName, configType.Name) as TextAsset;
-                        output[configType] = new ByteBuf(v.bytes);
-                    }
+                    TextAsset v = ResourcesComponent.Instance.LoadAsset<TextAsset>(type.Name);
+                    output[type] = new ByteBuf(v.bytes);
                 }
             }
 

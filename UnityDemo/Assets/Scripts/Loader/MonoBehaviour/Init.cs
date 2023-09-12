@@ -9,13 +9,15 @@ namespace ET
 	{
 		private void Start()
 		{
+			this.StartAsync().Coroutine();
+		}
+
+		private async ETTask StartAsync()
+		{
 			DontDestroyOnLoad(gameObject);
-			
-			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-			{
-				Log.Error(e.ExceptionObject.ToString());
-			};
-				
+
+			AppDomain.CurrentDomain.UnhandledException += (sender, e) => { Log.Error(e.ExceptionObject.ToString()); };
+
 			Game.AddSingleton<MainThreadSynchronizationContext>();
 
 			// 命令行参数
@@ -23,7 +25,7 @@ namespace ET
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
 				.WithParsed(Game.AddSingleton);
-			
+
 			Game.AddSingleton<TimeInfo>();
 			Game.AddSingleton<Logger>().ILog = new UnityLogger();
 			Game.AddSingleton<ObjectPool>();
@@ -31,10 +33,14 @@ namespace ET
 			Game.AddSingleton<EventSystem>();
 			Game.AddSingleton<TimerComponent>();
 			Game.AddSingleton<CoroutineLockComponent>();
-			
+
+			await Game.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
+
 			ETTask.ExceptionHandler += Log.Error;
 
-			Game.AddSingleton<CodeLoader>().Start();
+			var codeLoader = Game.AddSingleton<CodeLoader>();
+			await codeLoader.DownloadAsync();
+			codeLoader.Start();
 		}
 
 		private void Update()

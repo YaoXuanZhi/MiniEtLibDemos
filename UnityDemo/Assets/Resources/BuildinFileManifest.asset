@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b02dfa7aa9d4545b3417a18477fbee, type: 3}
+  m_Name: BuildinFileManifest
+  m_EditorClassIdentifier: 
+  BuildinFiles:
+  - PackageName: DefaultPackage
+    FileName: defaultpackage_assets_bundles_aotdlls_f97ae1a05adc0e50c0c8a37fb1087dfb.bundle
+    FileCRC32: 39463a87
+  - PackageName: DefaultPackage
+    FileName: defaultpackage_assets_bundles_code_9cdcc1e105410b06eb20120864dd1875.bundle
+    FileCRC32: b0a33f03
+  - PackageName: DefaultPackage
+    FileName: defaultpackage_assets_bundles_config_5d77b23643fbafed286d616b29302c25.bundle
+    FileCRC32: 87a21a75
+  - PackageName: DefaultPackage
+    FileName: defaultpackage_assets_bundles_ui_4dfb9e771b15331aab72cffa1d42c9df.bundle
+    FileCRC32: 1f19b80d

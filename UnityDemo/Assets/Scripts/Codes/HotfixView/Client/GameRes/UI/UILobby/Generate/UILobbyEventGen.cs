@@ -13,8 +13,8 @@ namespace ET.Client
 	{
 		public override async ETTask<UI> OnCreate(UIComponent uiComponent, UILayer uiLayer)
 		{
-			await uiComponent.DomainScene().GetComponent<ResourcesLoaderComponent>().LoadAsync(UIType.UILobby.StringToAB());
-			GameObject bundleGameObject = (GameObject) ResourcesComponent.Instance.GetAsset(UIType.UILobby.StringToAB(), UIType.UILobby);
+			string assetsName = $"Assets/Bundles/UI/{UIType.UILobby}.prefab";
+			GameObject bundleGameObject = await uiComponent.DomainScene().GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(assetsName);
 			GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, UIEventComponent.Instance.GetLayer((int)uiLayer));
 			UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILobby, gameObject);
 			var pnl = ui.AddComponent<UILobbyComponent>();
