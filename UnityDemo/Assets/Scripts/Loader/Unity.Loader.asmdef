@@ -6,7 +6,10 @@
         "Unity.Core",
         "HybridCLR.Runtime",
         "YooAsset",
-        "YooAsset.Editor"
+        "YooAsset.Editor",
+        "UniFramework.Event",
+        "UniFramework.Utility",
+        "UniFramework.Machine"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

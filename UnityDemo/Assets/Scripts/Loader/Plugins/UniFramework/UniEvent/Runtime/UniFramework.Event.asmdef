@@ -1,19 +1,10 @@
 {
-    "name": "Unity.Editor",
+    "name": "UniFramework.Event",
     "rootNamespace": "",
     "references": [
-        "Unity.ThirdParty",
-        "Unity.Core",
-        "Unity.Loader",
-        "HybridCLR.Runtime",
-        "HybridCLR.Editor",
-        "UnityEditor.UI",
-        "UnityEngine.UI",
-        "YooAsset"
+        "GUID:e34a5702dd353724aa315fb8011f08c3"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
+using YooAsset;
 
 namespace ET
 {
@@ -118,6 +119,15 @@ namespace ET
 			GUILayout.Label("Code Compile：");
 			EditorGUI.BeginChangeCheck();
 			this.globalConfig.CodeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
+			if (EditorGUI.EndChangeCheck())
+			{
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssetIfDirty(this.globalConfig);
+				AssetDatabase.Refresh();
+			}
+			
+			EditorGUI.BeginChangeCheck();
+			this.globalConfig.EPlayMode = (EPlayMode)EditorGUILayout.EnumPopup("PlayMode: ", this.globalConfig.EPlayMode);
 			if (EditorGUI.EndChangeCheck())
 			{
 				EditorUtility.SetDirty(this.globalConfig);

@@ -62,7 +62,6 @@ namespace ET
 #endif
         }
         
-#if UNITY
         private static async Task WaitForExitAsync(this Process self)
         {
             if (!self.HasExited)
@@ -102,6 +101,5 @@ namespace ET
                 self.Exited -= Handler;
             }
         }
-#endif
     }
 }
