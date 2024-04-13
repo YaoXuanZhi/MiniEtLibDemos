@@ -40,7 +40,6 @@ namespace ET
 
 		private GlobalConfig globalConfig;
 		private static string reloadConfigName;
-		private static bool isExcelExporting;
 
 		[MenuItem("ET/Build Tool")]
 		public static void ShowWindow()
@@ -162,20 +161,18 @@ namespace ET
 			
 			if (GUILayout.Button("ExcelExporter"))
 			{
-				Loom.RunAsync(() =>
+				var configDir = "Assets/Bundles/Config";
+				if (Directory.Exists(configDir))
 				{
-					isExcelExporting = true;
-					//Directory.Delete("Assets/Bundles/Config", true);
-					ToolsEditor.ExcelExporter();
-
-					// 先屏蔽Unity打包事宜
-					// // 设置ab包
-					// AssetImporter assetImporter = AssetImporter.GetAtPath($"Assets/Bundles/Config");
-					// assetImporter.assetBundleName = "Config.unity3d";
-					// AssetDatabase.SaveAssets();
-					// AssetDatabase.Refresh();
-					isExcelExporting = false;
-				});
+					Directory.Delete(configDir, true);
+				}
+				ToolsEditor.ExcelExporter(this.globalConfig.CodeMode);
+				
+				// // 设置ab包
+				// AssetImporter assetImporter = AssetImporter.GetAtPath(configDir);
+				// assetImporter.assetBundleName = "Config.unity3d";
+				// AssetDatabase.SaveAssets();
+				// AssetDatabase.Refresh();
 			}
 			
 			if (GUILayout.Button("Proto2CS"))
@@ -194,28 +191,21 @@ namespace ET
 	        {
 		        if (Application.isPlaying)
 		        {
-			        if (isExcelExporting)
+			        if (!string.IsNullOrEmpty(reloadConfigName))
 			        {
-				        UnityEngine.Debug.LogWarning($"正在导出配置表，忽略本次配置热重载 {isExcelExporting}");
-			        }
-			        else
-			        {
-				        if (!string.IsNullOrEmpty(reloadConfigName))
+				        reloadConfigName = reloadConfigName.Trim(' ');
+				        if (reloadConfigName.Length > 0)
 				        {
-					        reloadConfigName = reloadConfigName.Trim(' ');
-					        if (reloadConfigName.Length > 0)
+					        string category = $"{reloadConfigName}Category";
+					        Type type = EventSystem.Instance.GetType($"ET.{category}");
+					        if (type == null)
 					        {
-						        string category = $"{reloadConfigName}Category";
-						        Type type = EventSystem.Instance.GetType($"ET.{category}");
-						        if (type == null)
-						        {
-							        UnityEngine.Debug.LogWarning($"reload config but not find {category}");
-							        return;
-						        }
-
-						        ConfigComponent.Instance.LoadOneConfig(type);
-						        UnityEngine.Debug.Log($"reload config {reloadConfigName} finish!");
+						        UnityEngine.Debug.LogWarning($"reload config but not find {category}");
+						        return;
 					        }
+
+					        ConfigComponent.Instance.LoadOneConfig(type);
+					        UnityEngine.Debug.Log($"reload config {reloadConfigName} finish!");
 				        }
 			        }
 		        }

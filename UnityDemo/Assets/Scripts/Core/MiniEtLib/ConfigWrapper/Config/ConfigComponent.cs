@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Luban;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bright.Serialization;
 
 namespace ET
 {
@@ -19,93 +19,108 @@ namespace ET
             public string ConfigName;
         }
 		
-        private readonly Dictionary<string, IConfigSingleton> allConfig = new Dictionary<string, IConfigSingleton>(20);
-
-		public override void Dispose()
-		{
-			foreach (var kv in this.allConfig)
-			{
-				kv.Value.Destroy();
-			}
-		}
+        private readonly Dictionary<Type, IConfig> allConfig = new Dictionary<Type, IConfig>();
 
 		public object LoadOneConfig(Type configType)
 		{
-			this.allConfig.TryGetValue(configType.Name, out IConfigSingleton oneConfig);
-			if (oneConfig != null)
-			{
-				oneConfig.Destroy();
-			}
-			
+			this.allConfig.TryGetValue(configType, out IConfig oneConfig);
 			ByteBuf oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, ByteBuf>(new GetOneConfigBytes() {ConfigName = configType.Name});
-
+			
 			object category = Activator.CreateInstance(configType, oneConfigBytes);
-			IConfigSingleton singleton = category as IConfigSingleton;
+			ISingleton singleton = category as ISingleton;
 			singleton.Register();
 			
-			this.allConfig[configType.Name] = singleton;
+			this.allConfig[configType] = singleton as IConfig;
 			return category;
 		}
 		
-		public void Load()
-		{
-			this.allConfig.Clear();
-			Dictionary<Type, ByteBuf> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, ByteBuf>>(new GetAllConfigBytes());
-
-			foreach (Type type in configBytes.Keys)
-			{
-				ByteBuf oneConfigBytes = configBytes[type];
-				this.LoadOneInThread(type, oneConfigBytes);
-			}
-			
-			foreach (IConfigSingleton category in this.allConfig.Values)
-			{
-				category.Register();
-				category.Resolve(allConfig);
-			}
-		}
+		// public void Load()
+		// {
+		// 	this.allConfig.Clear();
+		// 	var configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, ByteBuf>>(new GetAllConfigBytes());
+		//
+		// 	foreach (Type type in configBytes.Keys)
+		// 	{
+		// 		var oneConfigBytes = configBytes[type];
+		// 		this.LoadOneInThread(type, oneConfigBytes);
+		// 	}
+		// }
 		
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, ByteBuf> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, ByteBuf>>(new GetAllConfigBytes());
+			var configBytes = await EventSystem.Instance.Invoke<GetAllConfigBytes, ETTask<Dictionary<Type, ByteBuf>>>(new GetAllConfigBytes());
 
+#if UNITY_WEBGL 
+			//注意，此处时为了兼容WebGL中无法使用多线程的情况
+			foreach (Type type in configBytes.Keys)
+			{
+				var oneConfigBytes = configBytes[type];
+				LoadOneInThread(type, oneConfigBytes);
+			}
+#else
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
 			
 			foreach (Type type in configBytes.Keys)
 			{
-				ByteBuf oneConfigBytes = configBytes[type];
+				var oneConfigBytes = configBytes[type];
 				Task task = Task.Run(() => LoadOneInThread(type, oneConfigBytes));
 				listTasks.Add(task);
 			}
 
 			await Task.WhenAll(listTasks.ToArray());
-
-			foreach (IConfigSingleton category in this.allConfig.Values)
-			{
-				category.Register();
-			}
-			
-			foreach (IConfigSingleton category in this.allConfig.Values)
-			{
-				category.Resolve(allConfig);
-			}
+#endif
 		}
 		
 		private void LoadOneInThread(Type configType, ByteBuf oneConfigBytes)
 		{
+			// object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			object category = Activator.CreateInstance(configType, oneConfigBytes);
+			
 			lock (this)
 			{
-				this.allConfig[configType.Name] = category as IConfigSingleton;	
+				ISingleton singleton = category as ISingleton;
+				singleton.Register();
+				this.allConfig[configType] = singleton as IConfig;
 			}
 		}
 		
-		public void TranslateText(Func<string, string, string> translator)
+		private void ResolveRef()
 		{
-			foreach (IConfigSingleton category in this.allConfig.Values)
+			foreach (var targetConfig in this.allConfig.Values)
 			{
-				category.TranslateText(translator);
+				targetConfig.ResolveRef();
+			}
+
+			foreach (var targetConfig in this.allConfig.Values)
+			{
+				Initialized(targetConfig);
+			}
+		}
+		
+		private void Initialized(IConfig configCategory)
+		{
+			var iConfigSystems = EventSystem.Instance.typeSystems.GetSystems(configCategory.GetType(), typeof(IConfigSystem));
+			if (iConfigSystems == null)
+			{
+				return;
+			}
+
+			foreach (IConfigSystem aConfigSystem in iConfigSystems)
+			{
+				if (aConfigSystem == null)
+				{
+					continue;
+				}
+
+				try
+				{
+					aConfigSystem.Initialized(configCategory);
+				}
+				catch (Exception e)
+				{
+					Log.Error(e);
+				}
 			}
 		}
 	}

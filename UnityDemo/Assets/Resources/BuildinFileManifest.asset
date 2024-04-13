@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildinFiles:
   - PackageName: DefaultPackage
-    FileName: defaultpackage_assets_bundles_aotdlls_f97ae1a05adc0e50c0c8a37fb1087dfb.bundle
-    FileCRC32: 39463a87
+    FileName: defaultpackage_assets_bundles_aotdlls_4815880e061d9631d8de7e21c3675861.bundle
+    FileCRC32: d7a56868
   - PackageName: DefaultPackage
-    FileName: defaultpackage_assets_bundles_code_9cdcc1e105410b06eb20120864dd1875.bundle
-    FileCRC32: b0a33f03
+    FileName: defaultpackage_assets_bundles_code_9af5d4d2406c206a39c994f21fdb9ac6.bundle
+    FileCRC32: c0bec3bf
   - PackageName: DefaultPackage
     FileName: defaultpackage_assets_bundles_config_5d77b23643fbafed286d616b29302c25.bundle
     FileCRC32: 87a21a75
   - PackageName: DefaultPackage
-    FileName: defaultpackage_assets_bundles_ui_4dfb9e771b15331aab72cffa1d42c9df.bundle
-    FileCRC32: 1f19b80d
+    FileName: defaultpackage_assets_bundles_ui_3e51bf93ca311cad2fbdb2ad551f6c5e.bundle
+    FileCRC32: af9d89fc

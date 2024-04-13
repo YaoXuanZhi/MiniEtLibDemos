@@ -9,7 +9,7 @@ namespace ET
         bool IsDisposed();
     }
     
-    public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
+    public abstract class Singleton<T>: ISingleton where T: Singleton<T>
     {
         private bool isDisposed;
         [StaticField]

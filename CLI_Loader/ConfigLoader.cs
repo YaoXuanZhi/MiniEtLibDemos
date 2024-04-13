@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Bright.Serialization;
+using Luban;
 
 namespace ET.Server
 {
     [Invoke]
-    public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, ByteBuf>>
+    public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, ETTask<Dictionary<Type, ByteBuf>>>
     {
-        public override Dictionary<Type, ByteBuf> Handle(ConfigComponent.GetAllConfigBytes args)
+        public override async ETTask<Dictionary<Type, ByteBuf>> Handle(ConfigComponent.GetAllConfigBytes args)
         {
             Dictionary<Type, ByteBuf> output = new Dictionary<Type, ByteBuf>();
             List<string> startConfigs = new List<string>()
@@ -24,15 +24,16 @@ namespace ET.Server
                 string configFilePath;
                 if (startConfigs.Contains(configType.Name))
                 {
-                    configFilePath = $"../../../../Resources/Config/Excel/s/{Options.Instance.StartConfig}/{configType.Name.ToLower()}.bytes";    
+                    configFilePath = $"../../../../Config/Excel/cs/{Options.Instance.StartConfig}/{configType.Name.ToLower()}.bytes";    
                 }
                 else
                 {
-                    configFilePath = $"../../../../Resources/Config/Excel/cs/GameConfig/{configType.Name.ToLower()}.bytes";
+                    configFilePath = $"../../../../Config/Excel/cs/{configType.Name.ToLower()}.bytes";
                 }
                 output[configType] = new ByteBuf(File.ReadAllBytes(configFilePath));
             }
 
+            await ETTask.CompletedTask;
             return output;
         }
     }
@@ -42,7 +43,7 @@ namespace ET.Server
     {
         public override ByteBuf Handle(ConfigComponent.GetOneConfigBytes args)
         {
-            var configFilePath = $"../../../../Resources/Config/Excel/cs/GameConfig/{args.ConfigName.ToLower()}.bytes";
+            var configFilePath = $"../../../../Config/Excel/cs/{args.ConfigName.ToLower()}.bytes";
             ByteBuf configBytes = new ByteBuf(File.ReadAllBytes(configFilePath));
             return configBytes;
         }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Bright.Common
+namespace Luban
 {
     public static class StringUtil
     {
@@ -14,7 +14,6 @@ namespace Bright.Common
         {
             foreach (var p in o.GetType().GetFields())
             {
-
                 sb.Append($"{p.Name} = {p.GetValue(o)},");
             }
 
@@ -30,12 +29,10 @@ namespace Bright.Common
             return "[" + string.Join(",", arr) + "]";
         }
 
-
         public static string CollectionToString<T>(IEnumerable<T> arr)
         {
             return "[" + string.Join(",", arr) + "]";
         }
-
 
         public static string CollectionToString<TK, TV>(IDictionary<TK, TV> dic)
         {
