@@ -13,9 +13,11 @@ namespace ET
             {
                 NetThreadComponent.Instance = self;
 
+#if !UNITY_WEBGL 
                 // 网络线程
                 self.thread = new Thread(self.NetThreadUpdate);
                 self.thread.Start();
+#endif
             }
         }
         
@@ -35,13 +37,19 @@ namespace ET
             {
                 NetThreadComponent.Instance = null;
                 self.isStop = true;
+                
+#if !UNITY_WEBGL 
                 self.thread.Join(1000);
+#endif
             }
         }
 
         // 主线程Update
         private static void MainThreadUpdate(this NetThreadComponent self)
         {
+#if UNITY_WEBGL 
+            NetServices.Instance.UpdateInNetThread();
+#endif
             NetServices.Instance.UpdateInMainThread();
         }
 

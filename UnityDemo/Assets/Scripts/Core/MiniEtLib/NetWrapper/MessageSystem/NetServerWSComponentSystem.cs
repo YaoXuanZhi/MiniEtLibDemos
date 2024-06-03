@@ -1,16 +1,17 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 
 namespace ET.Server
 {
-    [FriendOf(typeof(NetServerComponent))]
-    public static class NetServerComponentSystem
+    [FriendOf(typeof(NetServerWSComponent))]
+    public static class NetServerWSComponentSystem
     {
         [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<NetServerComponent, IPEndPoint>
+        public class AwakeSystem : AwakeSystem<NetServerWSComponent, IEnumerable<string>>
         {
-            protected override void Awake(NetServerComponent self, IPEndPoint address)
+            protected override void Awake(NetServerWSComponent self, IEnumerable<string> prefixs)
             {
-                self.ServiceId = NetServices.Instance.AddService(new TService(address, ServiceType.Outer));
+                self.ServiceId = NetServices.Instance.AddService(new WService(prefixs));
                 NetServices.Instance.RegisterAcceptCallback(self.ServiceId, self.OnAccept);
                 NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
                 NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
@@ -18,20 +19,15 @@ namespace ET.Server
         }
 
         [ObjectSystem]
-        public class DestroySystem: DestroySystem<NetServerComponent>
+        public class DestroySystem: DestroySystem<NetServerWSComponent>
         {
-            protected override void Destroy(NetServerComponent self)
+            protected override void Destroy(NetServerWSComponent self)
             {
-#if UNITY_EDITOR
-                //在Unity编辑器里，停止运行的时候，原本逻辑无法正常释放端口
-                NetServices.Instance.DirectRemoveService(self.ServiceId);
-#else
                 NetServices.Instance.RemoveService(self.ServiceId);
-#endif
             }
         }
 
-        private static void OnError(this NetServerComponent self, long channelId, int error)
+        private static void OnError(this NetServerWSComponent self, long channelId, int error)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -44,10 +40,9 @@ namespace ET.Server
         }
 
         // 这个channelId是由CreateAcceptChannelId生成的
-        private static void OnAccept(this NetServerComponent self, long channelId, IPEndPoint ipEndPoint)
+        private static void OnAccept(this NetServerWSComponent self, long channelId, IPEndPoint ipEndPoint)
         {
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
-            session.RemoteAddress = ipEndPoint;
 
             if (self.DomainScene().SceneType != SceneType.BenchmarkServer)
             {
@@ -58,18 +53,31 @@ namespace ET.Server
             }
         }
         
-        private static void OnRead(this NetServerComponent self, long channelId, long actorId, object message)
+        private static void OnRead(this NetServerWSComponent self, long channelId, long actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
             {
                 return;
             }
-            session.LastRecvTime = TimeHelper.ClientNow();
+            session.LastRecvTime = TimeInfo.Instance.ClientNow();
             
             OpcodeHelper.LogMsg(self.DomainZone(), message);
-			
+            
             EventSystem.Instance.Publish(Root.Instance.Scene, new NetServerComponentOnRead() {Session = session, Message = message});
         }
+        
+        // public static Session Create(this NetServerWSComponent self, IPEndPoint realIPEndPoint)
+        // {
+        //     long channelId = NetServices.Instance.CreateConnectChannelId();
+        //     Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
+        //     if (self.DomainScene().SceneType != SceneType.Benchmark)
+        //     {
+        //         session.AddComponent<SessionIdleCheckerComponent>();
+        //     }
+        //     NetServices.Instance.CreateChannel(self.ServiceId, session.Id, realIPEndPoint);
+        //
+        //     return session;
+        // }
     }
 }

@@ -16,6 +16,12 @@
         public static bool IsEditor = false;
 #endif
 		
+#if UNITY_WEBGL && !UNITY_EDITOR
+		public static bool IsUnityStandaloneWebGL = true;
+#else
+		public static bool IsUnityStandaloneWebGL = false;
+#endif
+		
 #if ENABLE_CODES
 		public static bool EnableCodes = true;
 #else

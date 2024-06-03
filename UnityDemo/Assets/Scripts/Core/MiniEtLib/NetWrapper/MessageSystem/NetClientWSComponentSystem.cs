@@ -4,24 +4,13 @@ using System.Collections.Generic;
 
 namespace ET.Client
 {
-    [FriendOf(typeof(NetClientComponent))]
-    public static class NetClientComponentSystem
+    [FriendOf(typeof(NetClientWSComponent))]
+    public static class NetClientWSComponentSystem
     {
         [ObjectSystem]
-        public class AwakeSystem1: AwakeSystem<NetClientComponent, AddressFamily>
+        public class AwakeSystem: AwakeSystem<NetClientWSComponent, IEnumerable<string>>
         {
-            protected override void Awake(NetClientComponent self, AddressFamily addressFamily)
-            {
-                self.ServiceId = NetServices.Instance.AddService(new TService(addressFamily, ServiceType.Outer));
-                NetServices.Instance.RegisterReadCallback(self.ServiceId, self.OnRead);
-                NetServices.Instance.RegisterErrorCallback(self.ServiceId, self.OnError);
-            }
-        }
-        
-        [ObjectSystem]
-        public class AwakeSystem2: AwakeSystem<NetClientComponent, string>
-        {
-            protected override void Awake(NetClientComponent self, string prefixs)
+            protected override void Awake(NetClientWSComponent self, IEnumerable<string> prefixs)
             {
 #if UNITY_WEBGL
                 self.ServiceId = NetServices.Instance.AddService(new UnityWebsocketService());
@@ -34,15 +23,15 @@ namespace ET.Client
         }
 
         [ObjectSystem]
-        public class DestroySystem: DestroySystem<NetClientComponent>
+        public class DestroySystem: DestroySystem<NetClientWSComponent>
         {
-            protected override void Destroy(NetClientComponent self)
+            protected override void Destroy(NetClientWSComponent self)
             {
                 NetServices.Instance.RemoveService(self.ServiceId);
             }
         }
 
-        private static void OnRead(this NetClientComponent self, long channelId, long actorId, object message)
+        private static void OnRead(this NetClientWSComponent self, long channelId, long actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -57,7 +46,7 @@ namespace ET.Client
             EventSystem.Instance.Publish(Root.Instance.Scene, new NetClientComponentOnRead() {Session = session, Message = message});
         }
 
-        private static void OnError(this NetClientComponent self, long channelId, int error)
+        private static void OnError(this NetClientWSComponent self, long channelId, int error)
         {
             Session session = self.GetChild<Session>(channelId);
             if (session == null)
@@ -69,7 +58,7 @@ namespace ET.Client
             session.Dispose();
         }
 
-        public static Session Create(this NetClientComponent self, IPEndPoint realIPEndPoint)
+        public static Session Create(this NetClientWSComponent self, IPEndPoint realIPEndPoint)
         {
             long channelId = NetServices.Instance.CreateConnectChannelId();
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
@@ -83,7 +72,7 @@ namespace ET.Client
             return session;
         }
         
-        public static Session Create(this NetClientComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
+        public static Session Create(this NetClientWSComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
         {
             long channelId = localConn;
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);

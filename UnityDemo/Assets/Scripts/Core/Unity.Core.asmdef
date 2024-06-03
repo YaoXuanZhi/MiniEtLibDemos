@@ -2,10 +2,7 @@
     "name": "Unity.Core",
     "rootNamespace": "ET",
     "references": [
-        "Unity.ThirdParty",
-        "Unity.Mathematics",
-        "UnityEditor.UI",
-        "UnityEngine.UI"
+        "UnityWebSocket.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

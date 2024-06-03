@@ -10,8 +10,19 @@ namespace ET.Client
         public static async ETTask Login(Scene clientScene, string account, string password)
         {
             Log.Debug("开始连接。。。");
-            NetClientComponent netClientComponent = clientScene.AddComponent<NetClientComponent, AddressFamily>(AddressFamily.InterNetwork);
-            var session = netClientComponent.Create(NetworkHelper.ToIPEndPoint("127.0.0.1", 30001));
+            NetClientComponent netClientComponent = null;
+            Session session = null;
+
+            if (Define.IsUnityStandaloneWebGL)
+            {
+                netClientComponent = clientScene.GetOrAddComponent<NetClientComponent, string>("ws:");
+                session = netClientComponent.Create(NetworkHelper.ToIPEndPoint("127.0.0.1", 30301));
+            }
+            else
+            {
+                netClientComponent = clientScene.AddComponent<NetClientComponent, AddressFamily>(AddressFamily.InterNetwork);
+                session = netClientComponent.Create(NetworkHelper.ToIPEndPoint("127.0.0.1", 30001));
+            }
         
             Log.Debug("登录服务器。。。");
             var response = (G2C_CreateRole) await session.Call(new C2G_CreateRole() { Name = account });

@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 namespace ET.Server
 {
@@ -15,6 +16,7 @@ namespace ET.Server
                 case SceneType.Gate:
                     // scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.InnerIPOutPort);
                     scene.AddComponent<NetServerComponent, IPEndPoint>(NetworkHelper.ToIPEndPoint("127.0.0.1", 30001));
+                    scene.AddComponent<NetServerWSComponent, IEnumerable<string>>(new[]{$"http://127.0.0.1:30301/"});
                     scene.AddComponent<PlayerComponent>();
                     break;
                 case SceneType.BenchmarkServer:
