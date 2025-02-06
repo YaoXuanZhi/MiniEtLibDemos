@@ -52,7 +52,7 @@ namespace ET.Client
 			catch (Exception exception)
 			{
 				var finalMessage = "服务器未响应：" + exception.Message;
-				Console.WriteLine(exception);
+				Log.Error(exception);
 				self.Account.text = finalMessage;
 				await LoginHelper.Logout(self.ClientScene());
 			}

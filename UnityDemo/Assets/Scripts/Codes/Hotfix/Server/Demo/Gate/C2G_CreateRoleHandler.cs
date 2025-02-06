@@ -24,7 +24,7 @@ namespace ET.Server
             
             playerComponent.Add(player);
             session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
-            Console.WriteLine($"player.Id Login ===> {playerComponent.LoggingCount} {player.Id}");
+            Log.Debug($"player.Id Login ===> {playerComponent.LoggingCount} {player.Id}");
 
             var instanceId = session.InstanceId;
             using var @lock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.GateLogin, player.UserId);

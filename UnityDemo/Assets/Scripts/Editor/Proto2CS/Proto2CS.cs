@@ -189,14 +189,14 @@ namespace ET
 
             if (cs.Contains("C"))
             {
-                // GenerateCS(sb, clientMessagePath, proto);
-                // GenerateCS(sb, serverMessagePath, proto);
+                GenerateCS(sb, clientMessagePath, proto);
+                GenerateCS(sb, serverMessagePath, proto);
                 GenerateCS(sb, clientServerMessagePath, proto);
             }
             
             if (cs.Contains("S"))
             {
-                // GenerateCS(sb, serverMessagePath, proto);
+                GenerateCS(sb, serverMessagePath, proto);
                 GenerateCS(sb, clientServerMessagePath, proto);
             }
         }

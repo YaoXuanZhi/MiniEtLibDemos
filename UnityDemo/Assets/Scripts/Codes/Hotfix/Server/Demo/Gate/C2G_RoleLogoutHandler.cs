@@ -19,7 +19,7 @@ namespace ET.Server
             Scene scene = session.DomainScene();
             PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
             playerComponent.LoggingCount--;
-            Console.WriteLine($"player.Id Logout ===> {playerComponent?.LoggingCount} {player.Id}");
+            Log.Info($"player.Id Logout ===> {playerComponent?.LoggingCount} {player.Id}");
             playerComponent?.Remove(player.Id);
             await ETTask.CompletedTask;
         }
