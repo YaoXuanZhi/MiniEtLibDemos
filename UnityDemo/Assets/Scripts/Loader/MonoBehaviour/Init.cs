@@ -35,7 +35,6 @@ namespace ET
 			Game.AddSingleton<CoroutineLockComponent>();
 
 			await Game.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
-			await ResourcesComponent.Instance.ApplyPatchAsync(this);
 
 			ETTask.ExceptionHandler += Log.Error;
 

@@ -1,17 +1,17 @@
 {
   "dependencies": {
     "com.code-philosophy.hybridclr": {
-      "version": "file:com.code-philosophy.hybridclr@51da1d4c43",
+      "version": "file:com.code-philosophy.hybridclr@8e571d594d",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
     },
     "com.tuyoogame.yooasset": {
-      "version": "file:com.tuyoogame.yooasset@2.1.1",
+      "version": "file:com.tuyoogame.yooasset@2.2.12",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.scriptablebuildpipeline": "1.21.21",
+        "com.unity.scriptablebuildpipeline": "1.21.25",
         "com.unity.modules.assetbundle": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
@@ -131,7 +131,7 @@
       }
     },
     "com.unity.scriptablebuildpipeline": {
-      "version": "1.21.21",
+      "version": "1.21.25",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
