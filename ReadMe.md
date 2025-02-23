@@ -17,6 +17,9 @@
 # Unity热重载演示
 ![unity_hotfix_preview.gif](./assets/unity_hotfix_preview.gif)
 
+# Unity WebGL示例
+![unity_webgl_preview.png](./assets/unity_webgl_preview.png)
+
 ---
 
 # 使用建议
