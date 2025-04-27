@@ -70,6 +70,7 @@ namespace ET
 
 			await Task.WhenAll(listTasks.ToArray());
 #endif
+			ResolveRef();
 		}
 		
 		private void LoadOneInThread(Type configType, ByteBuf oneConfigBytes)
