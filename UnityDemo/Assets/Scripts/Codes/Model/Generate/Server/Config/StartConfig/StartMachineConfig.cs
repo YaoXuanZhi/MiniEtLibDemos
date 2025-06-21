@@ -20,8 +20,6 @@ namespace ET
             InnerIP = _buf.ReadString();
             OuterIP = _buf.ReadString();
             WatcherPort = _buf.ReadString();
-
-            PostInit();
         }
 
         public static StartMachineConfig DeserializeStartMachineConfig(ByteBuf _buf)
@@ -59,6 +57,8 @@ namespace ET
             
             
             
+            Initialized();
+            CheckValid();            
         }
 
         public override string ToString()
@@ -71,6 +71,7 @@ namespace ET
             + "}";
         }
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();        
     }
 }

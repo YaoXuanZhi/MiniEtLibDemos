@@ -53,8 +53,6 @@ using System.Collections.Generic;
                 _dataList.Add(_v);
                 _dataMap.Add(_v.{{format_property_name __code_style __table.index_field.name}}, _v);
             }
-
-            PostInit();
         }
 
         public Dictionary<{{declaring_type_name key_type}}, {{declaring_type_name value_type}}> DataMap => _dataMap;
@@ -81,6 +79,8 @@ using System.Collections.Generic;
             {
                 _v.ResolveRef();
             }
+            Initialized();
+            CheckValid();            
         }
         {{~else if __table.is_list_table ~}}
         private readonly List<{{declaring_type_name value_type}}> _dataList;
@@ -165,6 +165,8 @@ using System.Collections.Generic;
             {
                 _v.ResolveRef();
             }
+            Initialized();
+            CheckValid(); 
         }
         {{~else~}}
 
@@ -190,9 +192,12 @@ using System.Collections.Generic;
         public void ResolveRef()
         {
             _data.ResolveRef();
+            Initialized();
+            CheckValid();
         }
         {{~end~}}
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();
     }
 {{namespace_with_grace_end __namespace_with_top_module}}

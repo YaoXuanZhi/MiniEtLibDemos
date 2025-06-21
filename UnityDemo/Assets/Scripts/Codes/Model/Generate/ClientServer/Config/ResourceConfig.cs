@@ -18,8 +18,6 @@ namespace ET
         {
             Id = _buf.ReadInt();
             Url = _buf.ReadString();
-
-            PostInit();
         }
 
         public static ResourceConfig DeserializeResourceConfig(ByteBuf _buf)
@@ -45,6 +43,8 @@ namespace ET
         {
             
             
+            Initialized();
+            CheckValid();            
         }
 
         public override string ToString()
@@ -55,6 +55,7 @@ namespace ET
             + "}";
         }
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();        
     }
 }

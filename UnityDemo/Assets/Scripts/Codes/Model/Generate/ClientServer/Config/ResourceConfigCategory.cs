@@ -33,8 +33,6 @@ namespace ET
                 _dataList.Add(_v);
                 _dataMap.Add(_v.Id, _v);
             }
-
-            PostInit();
         }
 
         public Dictionary<int, ResourceConfig> DataMap => _dataMap;
@@ -57,8 +55,11 @@ namespace ET
             {
                 _v.ResolveRef();
             }
+            Initialized();
+            CheckValid();            
         }
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();
     }
 }

@@ -22,8 +22,6 @@ namespace ET
             SceneType = _buf.ReadString();
             Name = _buf.ReadString();
             Port = _buf.ReadInt();
-
-            PostInit();
         }
 
         public static StartSceneConfig DeserializeStartSceneConfig(ByteBuf _buf)
@@ -73,6 +71,8 @@ namespace ET
             
             
             
+            Initialized();
+            CheckValid();            
         }
 
         public override string ToString()
@@ -87,6 +87,7 @@ namespace ET
             + "}";
         }
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();        
     }
 }

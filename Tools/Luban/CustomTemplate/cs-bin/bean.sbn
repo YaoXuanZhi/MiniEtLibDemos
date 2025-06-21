@@ -66,8 +66,6 @@
             }
                 {{~end~}}
             {{~end~}}
-
-            PostInit();
         }
 
         public static {{__name}} Deserialize{{__name}}(ByteBuf _buf)
@@ -118,6 +116,8 @@
             {{~for field in export_fields~}}
             {{generate_resolve_field_ref field}}
             {{~end~}}
+            Initialized();
+            CheckValid();            
         }
 
         public override string ToString()
@@ -129,6 +129,7 @@
             + "}";
         }
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();        
     }
 {{namespace_with_grace_end __namespace_with_top_module}}

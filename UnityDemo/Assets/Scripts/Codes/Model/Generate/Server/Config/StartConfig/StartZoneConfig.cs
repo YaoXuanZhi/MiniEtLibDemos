@@ -20,8 +20,6 @@ namespace ET
             DBConnection = _buf.ReadString();
             DBName = _buf.ReadString();
             Desc = _buf.ReadString();
-
-            PostInit();
         }
 
         public static StartZoneConfig DeserializeStartZoneConfig(ByteBuf _buf)
@@ -59,6 +57,8 @@ namespace ET
             
             
             
+            Initialized();
+            CheckValid();            
         }
 
         public override string ToString()
@@ -71,6 +71,7 @@ namespace ET
             + "}";
         }
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();        
     }
 }

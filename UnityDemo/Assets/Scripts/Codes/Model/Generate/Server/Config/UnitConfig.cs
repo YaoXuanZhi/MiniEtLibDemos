@@ -24,8 +24,6 @@ namespace ET
             Weight = _buf.ReadInt();
             AI = _buf.ReadInt();
             AI_Ref = null;
-
-            PostInit();
         }
 
         public static UnitConfig DeserializeUnitConfig(ByteBuf _buf)
@@ -83,6 +81,8 @@ namespace ET
             
             
             AI_Ref = AIConfigCategory.Instance.GetOrDefault(AI);
+            Initialized();
+            CheckValid();            
         }
 
         public override string ToString()
@@ -98,6 +98,7 @@ namespace ET
             + "}";
         }
 
-        partial void PostInit();
+        partial void Initialized();
+        partial void CheckValid();        
     }
 }
