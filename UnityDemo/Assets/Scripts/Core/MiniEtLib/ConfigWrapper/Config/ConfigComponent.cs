@@ -1,5 +1,7 @@
 ﻿using Luban;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -124,5 +126,55 @@ namespace ET
 				}
 			}
 		}
+
+#if UNITY_EDITOR
+		//编辑器上要是想使用配置表，那么在读取配置表之前先调用这个方法，确保配置表单例被正常加载
+		public static void TryLoadForEditor()
+		{
+			if (Instance == null)
+			{
+				//编辑器下，如果触发了一次重新编译，那么其单例实例就会被销毁，所以需要重新创建
+				if (new ConfigComponent() is ISingleton inst)
+				{
+					inst.Register();
+				}
+
+				Instance.LoadForEditor();
+			}
+		}
+
+		private void LoadForEditor()
+		{
+			this.allConfig.Clear();
+
+			//编辑器下，如果触发了一次重新编译，那么其单例实例就会被销毁，所以需要重新创建
+			if (EventSystem.Instance == null)
+			{
+				if (new EventSystem() is ISingleton inst)
+				{
+					inst.Register();
+
+					Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+					Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
+					EventSystem.Instance.Add(types);
+				}
+			}
+
+			Dictionary<Type, ByteBuf> configBytes = new();
+			HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof(ConfigAttribute));
+
+			foreach (Type configType in configTypes)
+			{
+				var configFilePath = $"Assets/Art/Config/{configType.Name}.bytes";
+				configBytes[configType] = new ByteBuf(File.ReadAllBytes(configFilePath));
+			}
+
+			foreach (Type type in configBytes.Keys)
+			{
+				var oneConfigBytes = configBytes[type];
+				this.LoadOneInThread(type, oneConfigBytes);
+			}
+		}
+#endif
 	}
 }
