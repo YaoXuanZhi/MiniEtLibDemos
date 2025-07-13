@@ -20,6 +20,9 @@
 # Unity WebGL示例
 ![unity_webgl_preview.png](./assets/unity_webgl_preview.png)
 
+# NetCore测试用例
+![netcore_testcase.png](./assets/netcore_testcase.png)
+
 ---
 
 # 使用建议

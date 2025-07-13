@@ -13,4 +13,13 @@ namespace ET.Server
             return string.Empty;
         }
     }
+    
+    [GmHandler("do_example", "测试示例")]
+    public class GmDoExample : IGmHandler
+    {
+        public string Handle(Session session, Player player, List<string> gmArgs)
+        {
+            return "do_example_ok";
+        }
+    }
 }

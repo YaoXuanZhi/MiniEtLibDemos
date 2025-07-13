@@ -10,7 +10,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        
+        <Compile Include="..\..\UnityDemo\Assets\Scripts\Codes\Hotfix\Client\**\*.cs">
+            <Link>Client\%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
+
         <Compile Include="..\..\UnityDemo\Assets\Scripts\Codes\Hotfix\Server\**\*.cs">
             <Link>Server\%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
@@ -23,6 +26,11 @@
         <ProjectReference Include="..\..\Share\Analyzer\Share.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
         <ProjectReference Include="..\Loader\Loader.csproj" />
         <ProjectReference Include="..\Model\Model.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="..\..\UnityDemo\Assets\Scripts\Codes\Hotfix\Client\Demo\TestCase\">
+        <Link>Client\Demo\TestCase</Link>
+      </Folder>
     </ItemGroup>    
 
 </Project>
