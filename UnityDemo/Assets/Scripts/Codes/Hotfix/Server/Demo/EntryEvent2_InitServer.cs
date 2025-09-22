@@ -23,7 +23,7 @@ namespace ET.Server
 
             if (Options.Instance.Console == 1)
             {
-                Root.Instance.Scene.GetOrAddComponent<ConsoleComponent>();
+                Root.Instance.Scene.GetOrAddComponent<ReplComponent>();
             }
         }
     }
